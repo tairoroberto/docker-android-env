@@ -10,27 +10,22 @@ RUN dpkg --add-architecture i386 \
     && apt-get -qq update
 
 RUN apt-get update -qq \
-  && apt-get install -y software-properties-common \
+  && apt-get install -y software-properties-common  --no-install-recommends \
   && apt-get install -y python-software-properties \
-  && apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+  && apt-get install -y libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386 \
 
-RUN buildDeps='software-properties-common'; \
-      set -x \
-      && apt-get update \
-      && apt-get install -y $buildDeps --no-install-recommends \
+  # use WebUpd8 PPA
+  && add-apt-repository ppa:webupd8team/java -y \
+  &&  apt-get update -y \
 
-      # use WebUpd8 PPA
-      && add-apt-repository ppa:webupd8team/java -y \
-      &&  apt-get update -y \
+  # PHP repository
+  && add-apt-repository -y ppa:ondrej/php \
+  && apt-get update -y \
 
-      # PHP repository
-      && add-apt-repository -y ppa:ondrej/php \
-      && apt-get update -y \
-
-      # automatically accept the Oracle license
-      && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
-      && apt-get install -y oracle-java8-installer \
-      && apt-get install -y oracle-java8-set-default
+  # automatically accept the Oracle license
+  && echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections \
+  && apt-get install -y oracle-java8-installer \
+  && apt-get install -y oracle-java8-set-default
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
 
@@ -74,7 +69,7 @@ ENV GRADLE_HOME=/usr/share/gradle
 
 
 RUN a2enmod rewrite \
-  && curl --silent --location https://deb.nodesource.com/setup_4.x | bash -
+  && curl --silent --location https://deb.nodesource.com/setup_8.x | bash -
 
 RUN apt-get update -qq \
   && apt-get install -y nodejs

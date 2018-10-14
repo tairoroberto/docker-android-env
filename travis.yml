@@ -1,0 +1,10 @@
+sudo: required
+
+services:
+- docker
+
+script:
+- docker build -t android-env .
+- docker run -d android-env
+- docker ps -a
+- docker run android-env /bin/sh -c "android list && mvn -v && gradle -v && java -version && ant -version"
