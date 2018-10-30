@@ -5,6 +5,9 @@ MAINTAINER Tairo Roberto <tairoroberto@gmail.com>
 ENV VERSION_SDK_TOOLS "4333796"
 
 ENV ANDROID_HOME "/opt/android-sdk-linux"
+ENV ANDROID_COMPILE_SDK: "27"
+ENV ANDROID_BUILD_TOOLS: "27.0.0"
+ENV ANDROID_SDK_TOOLS: "27.0.2"
 ENV PATH "$PATH:${ANDROID_HOME}/tools"
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -71,6 +74,11 @@ RUN echo y | android update sdk --no-ui --all --filter build-tools-24.0.1 | grep
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.3 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.2 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.1 | grep 'package installed'
+
+RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter build-tools-${ANDROID_BUILD_TOOLS}
+RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-android-m2repository
+RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-google-google_play_services
+RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-google-m2repository
 
 RUN android list sdk --all
 
