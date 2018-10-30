@@ -75,9 +75,9 @@ RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.3 | grep
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.2 | grep 'package installed'
 RUN echo y | android update sdk --no-ui --all --filter build-tools-23.0.1 | grep 'package installed'
 
-RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-android-m2repository
-RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-google-google_play_services
-RUN echo y | android-sdk-linux/tools/android --silent update sdk --no-ui --all --filter extra-google-m2repository
+RUN echo y | android --silent update sdk --no-ui --all --filter extra-android-m2repository
+RUN echo y | android --silent update sdk --no-ui --all --filter extra-google-google_play_services
+RUN echo y | android --silent update sdk --no-ui --all --filter extra-google-m2repository
 
 RUN android list sdk --all
 
