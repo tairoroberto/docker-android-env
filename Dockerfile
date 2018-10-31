@@ -58,4 +58,10 @@ RUN mkdir -p /root/.android && \
 RUN while read -r package; do PACKAGES="${PACKAGES}${package} "; done < $ANDROID_HOME/packages.txt && \
     ${ANDROID_HOME}/tools/bin/sdkmanager ${PACKAGES}
 
+
+RUN echo no | $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-27;google_apis;x86"
+
 RUN yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
+
+RUN echo no | $ANDROID_HOME/tools/bin/avdmanager create avd -n testAVD -k "system-images;android-27;google_apis;x86" -b x86 -c 100M -d 7 -f
+
