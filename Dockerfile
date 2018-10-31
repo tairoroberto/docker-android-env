@@ -21,6 +21,7 @@ RUN apt-get -qq update && \
       wget \
       usbutils \
       libusb-1.0-0-dev \
+      libqt5widgets5 \
       openjdk-8-jdk \
       libc6-i386 \
       lib32stdc++6 \
