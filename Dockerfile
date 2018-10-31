@@ -20,6 +20,8 @@ RUN apt-get -qq update && \
       bzip2 \
       curl \
       wget \
+      usbutils \
+      libusb-1.0-0-dev \
       openjdk-8-jdk \
       libc6-i386 \
       lib32stdc++6 \
