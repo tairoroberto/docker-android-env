@@ -64,8 +64,4 @@ RUN yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
 
 RUN echo no | $ANDROID_HOME/tools/bin/avdmanager create avd -n testAVD -k "system-images;android-27;google_apis;x86" -b x86 -c 100M -d 7 -f
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libqt5widgets5
-
-ENV QT_QPA_PLATFORM offscreen
-
 ENV LD_LIBRARY_PATH ${ANDROID_HOME}/tools/lib64:${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
