@@ -4,10 +4,10 @@ MAINTAINER Tairo Roberto <tairoroberto@gmail.com>
 
 ENV VERSION_SDK_TOOLS "4333796"
 
-ENV ANDROID_HOME /opt/android-sdk-linux
-ENV ANDROID_COMPILE_SDK: "27"
-ENV ANDROID_BUILD_TOOLS: "27.0.0"
-ENV ANDROID_SDK_TOOLS: "27.0.2"
+ENV ANDROID_HOME ~/Android/Sdk
+ENV ANDROID_COMPILE_SDK: "28"
+ENV ANDROID_BUILD_TOOLS: "28.0.0"
+ENV ANDROID_SDK_TOOLS: "28.0.3"
 ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -15,21 +15,27 @@ RUN mkdir -p $ANDROID_HOME
 RUN cd $ANDROID_HOME
 
 RUN apt-get -qq update && \
-    apt-get install -qqy --no-install-recommends \
-      bzip2 \
-      curl \
-      wget \
-      usbutils \
-      libusb-1.0-0-dev \
-      libqt5widgets5 \
-      openjdk-8-jdk \
-      libc6-i386 \
-      lib32stdc++6 \
-      lib32gcc1 \
-      lib32ncurses5 \
-      lib32z1 \
-      unzip \
-      locales \
+	apt-get install -qqy --no-install-recommends \
+	bzip2 \
+	curl \
+	wget \
+	usbutils \
+	libusb-1.0-0-dev \
+	libqt5widgets5 \
+	openjdk-8-jdk \
+	libc6-i386 \
+	lib32stdc++6 \
+	lib32gcc1 \
+	lib32ncurses5 \
+	lib32z1 \
+	locales \
+	bison \
+	git \
+	gperf \
+	lib32bz2-1.0 \
+	libxml2-utils \
+	make \
+	zip
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
 RUN locale-gen en_US.UTF-8
@@ -59,10 +65,18 @@ RUN while read -r package; do PACKAGES="${PACKAGES}${package} "; done < $ANDROID
     ${ANDROID_HOME}/tools/bin/sdkmanager ${PACKAGES}
 
 
-RUN echo no | $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-27;google_apis;x86"
+RUN echo no | $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-28;google_apis;x86"
 
 RUN yes | ${ANDROID_HOME}/tools/bin/sdkmanager --licenses
 
-RUN echo no | $ANDROID_HOME/tools/bin/avdmanager create avd -n testAVD -k "system-images;android-27;google_apis;x86" -b x86 -c 100M -d 7 -f
+RUN echo no | $ANDROID_HOME/tools/bin/avdmanager create avd -n testAVD -k "system-images;android-28;google_apis;x86" -b x86 -c 100M -d 7 -f
 
 ENV LD_LIBRARY_PATH ${ANDROID_HOME}/tools/lib64:${ANDROID_HOME}/emulator/lib64:${ANDROID_HOME}/emulator/lib64/qt/lib
+
+ADD https://dl.google.com/dl/android/studio/ide-zips/3.2.1.0/android-studio-ide-181.5056338-linux.zip /opt/android-studio.zip
+
+RUN cd /opt/ && unzip android-studio.zip && rm android-studio.zip
+
+CMD /opt/android-studio/bin/studio.sh
+
+
