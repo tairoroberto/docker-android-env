@@ -1,0 +1,21 @@
+version: '3'
+services:
+ AndroidStudio:
+  container_name: AndroidStudio
+  image: 'tairoroberto/android-env:latest'
+  network_mode: host
+  restart: always
+  privileged: true
+  environment:
+   - DISPLAY=$DISPLAY
+  devices:
+   - /dev/dri                   # suporte a aceleração 3D por hardware
+   - /dev/snd                   # suport audio
+   - /dev/video0                # suporte webcan
+   - /dev/input                 # suporte a dispositivos de entrada
+   - /dev/bus/usb:/dev/bus/usb  # suporte a dispositivos usb
+  volumes:
+   - '/etc/localtime:/etc/localtime:ro' # mesma hora do host
+   - '$HOME/.Xauthority:/root/.Xauthority:rw' # usando o sistema de UI do host
+   - '$HOME/workspace:/root/workspace'
+#  command: sh /opt/android-studio/bin/studio.sh

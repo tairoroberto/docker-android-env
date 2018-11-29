@@ -4,7 +4,7 @@ MAINTAINER Tairo Roberto <tairoroberto@gmail.com>
 
 ENV VERSION_SDK_TOOLS "4333796"
 
-ENV ANDROID_HOME ~/Android/Sdk
+ENV ANDROID_HOME /opt/android-sdk-linux
 ENV ANDROID_COMPILE_SDK: "28"
 ENV ANDROID_BUILD_TOOLS: "28.0.0"
 ENV ANDROID_SDK_TOOLS: "28.0.3"
@@ -12,7 +12,10 @@ ENV PATH ${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN mkdir -p $ANDROID_HOME 
+
 RUN cd $ANDROID_HOME
+
+RUN dpkg --add-architecture i386
 
 RUN apt-get -qq update && \
 	apt-get install -qqy --no-install-recommends \
@@ -27,15 +30,18 @@ RUN apt-get -qq update && \
 	lib32stdc++6 \
 	lib32gcc1 \
 	lib32ncurses5 \
-	lib32z1 \
 	locales \
 	bison \
 	git \
 	gperf \
-	lib32bz2-1.0 \
 	libxml2-utils \
 	make \
-	zip
+	zip \
+	unzip \
+	libncurses5:i386 \
+	libstdc++6:i386 \
+	lib32z1 \
+	libbz2-1.0:i386 \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
     
 RUN locale-gen en_US.UTF-8
@@ -47,7 +53,7 @@ RUN rm -f /etc/ssl/certs/java/cacerts; \
 
 RUN wget https://dl.google.com/android/repository/tools_r25.2.3-linux.zip
 
-RUN unzip tools_r25.2.3-linux.zip -d /opt/android-sdk-linux
+RUN unzip tools_r25.2.3-linux.zip -d $ANDROID_HOME
 
 RUN rm -rf tools_r25.2.3-linux.zip
 
@@ -77,6 +83,16 @@ ADD https://dl.google.com/dl/android/studio/ide-zips/3.2.1.0/android-studio-ide-
 
 RUN cd /opt/ && unzip android-studio.zip && rm android-studio.zip
 
-CMD /opt/android-studio/bin/studio.sh
+#RUN rm -rf /root/.Xauthorit*
+
+RUN mkdir -p /root/workspace
+
+VOLUME /root/workspace
+
+WORKDIR /root/workspace
+
+COPY settings.jar /root/workspace/settings.jar
+
+ENTRYPOINT ["/opt/android-studio/bin/studio.sh"]
 
 
