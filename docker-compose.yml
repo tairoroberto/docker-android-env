@@ -18,4 +18,4 @@ services:
    - '/etc/localtime:/etc/localtime:ro' # mesma hora do host
    - '$HOME/.Xauthority:/root/.Xauthority:rw' # usando o sistema de UI do host
    - '$HOME/workspace:/root/workspace'
-#  command: sh /opt/android-studio/bin/studio.sh
+  command: sh /opt/android-studio/bin/studio.sh

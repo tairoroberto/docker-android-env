@@ -81,9 +81,19 @@ ENV LD_LIBRARY_PATH ${ANDROID_HOME}/tools/lib64:${ANDROID_HOME}/emulator/lib64:$
 
 ADD https://dl.google.com/dl/android/studio/ide-zips/3.2.1.0/android-studio-ide-181.5056338-linux.zip /opt/android-studio.zip
 
-RUN cd /opt/ && unzip android-studio.zip && rm android-studio.zip
+RUN cd /opt/ && unzip android-studio.zip && rm -rf android-studio.zip
 
-#RUN rm -rf /root/.Xauthorit*
+ADD https://dl.google.com/dl/android/studio/ide-zips/3.4.0.5/android-studio-ide-183.5146016-linux.zip /opt/android-studio-preview.zip
+
+RUN mkdir -p /opt/android-studio-preview1 
+
+RUN unzip /opt/android-studio-preview.zip -d /opt/android-studio-preview1
+
+RUN mv /opt/android-studio-preview1/android-studio /opt/android-studio-preview
+
+RUN  rm -rf /opt/android-studio-preview.zip && rm -rf /opt/android-studio-preview1
+
+RUN chmod +x /opt/android-studio/bin/studio.sh && chmod +x /opt/android-studio-preview/bin/studio.sh
 
 RUN mkdir -p /root/workspace
 
@@ -92,7 +102,5 @@ VOLUME /root/workspace
 WORKDIR /root/workspace
 
 COPY settings.jar /root/workspace/settings.jar
-
-ENTRYPOINT ["/opt/android-studio/bin/studio.sh"]
 
 
